@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "gonsiorr-sailing-engine",
+  "version": "${version}",
+  "name": "Gonsiorr Sailing Engine",
+  "description": "Formula 18 catamaran and sailing systems for Minecraft.",
+  "authors": ["Gonsiorr"],
+  "license": "CC0-1.0",
+  "icon": "assets/gonsiorr-sailing-engine/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["gse.minu.GonsioRRSailingEngine"],
+    "client": ["gse.minu.client.GonsioRRSailingEngineClient"],
+    "fabric-datagen": ["gse.minu.client.GonsioRRSailingEngineDataGenerator"]
+  },
+  "mixins": [
+    "gonsiorr-sailing-engine.mixins.json",
+    { "config": "gonsiorr-sailing-engine.client.mixins.json", "environment": "client" }
+  ],
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["SIS", "PFP", "SIS"],
+  "key": {
+    "S": {"item": "minecraft:string"},
+    "I": {"item": "minecraft:iron_ingot"},
+    "P": {"item": "minecraft:oak_planks"},
+    "F": {"item": "minecraft:crafting_table"}
+  },
+  "result": {"id": "gonsiorr-sailing-engine:sailing_crafting_station", "count": 1}
+}

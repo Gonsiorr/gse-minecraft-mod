@@ -1,0 +1,273 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'maven-publish'
+}
+
+repositories {
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"gonsiorr-sailing-engine" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+fabricApi {
+	configureDataGeneration {
+		client = true
+		modId = "gonsiorr-sailing-engine"
+	}
+}
+
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	d|�o-�G����ƭy�s.
+
+Nie używać Dragon Breath ani Shulker Shells.
+
+# 18. HUD I STEROWANIE
+
+## 18.1. HUD
+
+HUD znajduje się u góry ekranu i jest widoczny wyłącznie dla sternika.
+
+Pokazuje:
+- prędkość w blokach/s;
+- wiatr w Kt i Bft;
+- kierunek wiatru;
+- kierunek dziobu;
+- kąt względem wiatru;
+- pasek trymu;
+- zielone pasmo optimum;
+- kropkę aktualnego trymu;
+- wychylenie steru od 100% w lewo przez 0 do 100% w prawo;
+- stan żagli;
+- stan gennakera;
+- stan kotwicy.
+
+Bez ostrzeżeń, porad i komunikatów podpowiadających graczowi, co ma zrobić.
+
+## 18.2. Sterowanie
+
+| Akcja | Sterowanie |
+|---|---|
+| Sterowanie lewo/prawo | A / D |
+| Wybieranie żagli | W |
+| Luzowanie żagli | S |
+| Podnoszenie/opuszczanie żagli | R |
+| Gennaker | G |
+| Kotwica | H |
+| Wysiadanie | Shift + X |
+| Zmiana miejsca/przekazanie steru | Shift + prawy przycisk |
+| Wsiadanie pasażera | prawy przycisk |
+| Wsiadanie sternika | Shift + prawy przycisk |
+
+Sterowanie musi być remapowalne w standardowym ekranie sterowania Minecrafta i obsługiwać ostrzeżenia o konfliktach klawiszy.
+
+# 19. KOLEJNOŚĆ IMPLEMENTACJI
+
+## Etap 1 — fundament
+
+- Odszukać źródło V0.2.5.
+- Zinwentaryzować pliki.
+- Zachować istniejące funkcje.
+- Utworzyć/wykorzystać katalog `~/Desktop/GSE`.
+- Sprawdzić bazową kompilację.
+- Ustalić strukturę projektu i identyfikatory GSE.
+
+## Etap 2 — model
+
+- `F18Model` generowany w Javie.
+- `F18Renderer`.
+- Osobne elementy i punkty obrotu.
+- Proste kolory bez tekstur.
+- Animacja żagli i sterów.
+- Dwa miejsca.
+- Wsiadanie i wysiadanie.
+
+## Etap 3 — fizyka
+
+- Sterowanie.
+- Przyspieszenie.
+- Bezwładność.
+- Opór.
+- Kurs względem wiatru.
+- Trym.
+- Dryf.
+- Miecze.
+- Kotwica.
+
+## Etap 4 — wiatr i gennaker
+
+- `WindManager`.
+- Harmonogram zmian.
+- Rozkłady pogody.
+- Synchronizacja klient-serwer.
+- Gennaker.
+- Zwroty i ograniczenia manewrów.
+
+## Etap 5 — załoga i foiling
+
+- Dwa miejsca.
+- Przekazywanie steru.
+- Automatyczne opuszczanie żagli po wyjściu sternika.
+- Przechył.
+- Trapezy.
+- Foiling.
+
+## Etap 6 — wyposażenie i crafting
+
+- Sloty i Tier komponentów.
+- Stacja craftingu.
+- Receptury.
+- Progresja.
+- Serwis.
+- Personalizacja.
+- Integracja EMI, jeśli możliwa.
+
+## Etap 7 — trwałość i dopracowanie
+
+- Zapisywanie danych łodzi.
+- Odzyskiwanie bez utraty i duplikacji.
+- Kolizje.
+- Zachowanie na brzegu.
+- HUD.
+- Remapowalne sterowanie.
+- Testy singleplayer i serwerowe.
+
+# 20. AKTUALNY STAN PROJEKTU
+
+## 20.1. Zatwierdzone
+
+- Nazwa: Gonsiorr Sailing Engine (GSE).
+- Zakres: wyłącznie F18.
+- Minecraft 1.21.1.
+- Fabric.
+- Java 21.
+- Model generowany w Javie.
+- Bez Blockbencha na obecnym etapie.
+- Bez tekstur na pierwszym etapie.
+- Model blokowy.
+- Uzgodnione wymiary i hierarchia.
+- Uzgodniona koncepcja fizyki, wiatru, gennakera, załogi, foilingu, kolizji, kotwicy, craftingu, progresji i HUD.
+- Użytkownik zatwierdził całą skonsolidowaną specyfikację.
+
+## 20.2. Istniejące źródło
+
+Wcześniej wskazano archiwum:
+
+`nacra-f18-mod-v0.2.5-captain-passenger-burst-source.zip`
+
+Wcześniejsza ścieżka:
+
+`/mnt/data/files/nacra-f18-mod-v0.2.5-captain-passenger-burst-source.zip`
+
+Archiwum było wcześniej sprawdzane pod kątem integralności ZIP. Jest to źródło, nie gotowy JAR.
+
+Należy odszukać i zweryfikować je w aktualnym środowisku.
+
+## 20.3. Wstępnie opisane funkcje V0.2.5
+
+Wcześniejsze informacje o źródle wskazywały na:
+- dwa miejsca;
+- Shift + prawy przycisk dla sternika;
+- zwykły prawy przycisk dla pasażera;
+- sterowanie wyłącznie przez sternika;
+- trzysekundowy boost przy wsiadaniu;
+- zatrzymanie napędu po wyjściu sternika;
+- fizykę wiatru;
+- statyczny renderer żagli;
+- wstępne parametry polary, kotwiczenia/beachingu, załogi i sterowania.
+
+Wszystkie te informacje wymagają potwierdzenia w kodzie.
+
+## 20.4. Niepotwierdzone
+
+- Nie potwierdzono kompletnej kompilacji projektu.
+- Nie potwierdzono testów w grze.
+- Nie potwierdzono gotowego JAR.
+- Nie potwierdzono implementacji modelu zgodnego z tą specyfikacją.
+- V0.2.6 było opisem planu, nie potwierdzonym wydaniem.
+
+Nie uznawać żadnego elementu za zaimplementowany bez inspekcji kodu.
+
+# 21. PIERWSZE ZADANIA DLA WORK
+
+Po załadowaniu tego dokumentu:
+
+1. Odszukaj źródło V0.2.5.
+2. Zweryfikuj archiwum ZIP.
+3. Rozpakuj do katalogu roboczego.
+4. Zinwentaryzuj wszystkie pliki.
+5. Sprawdź `build.gradle`, `gradle.properties`, `fabric.mod.json`.
+6. Sprawdź klasy encji, itemu, renderera i zasoby.
+7. Ustal dostępność Gradle Wrapper i Java 21.
+8. Przygotuj katalog `~/Desktop/GSE` na Macu.
+9. Wykonaj bazowy build.
+10. Zapisz rzeczywisty wynik kompilacji.
+11. Następnie rozpocznij implementację modelu `F18Model` i `F18Renderer`.
+
+**Nie rozpoczynaj od pustego projektu, jeśli źródło V0.2.5 jest dostępne i nadaje się do dalszego rozwoju.**
+
+---
+
+# 22. NAJWAŻNIEJSZA ZASADA
+
+GSE ma być modem żeglarskim, a nie tylko łodzią z teksturą.
+
+Priorytetem jest działający, spójny system:
+- modelu;
+- sterowania;
+- wiatru;
+- fizyki;
+- załogi;
+- wyposażenia;
+- progresji;
+- craftingu;
+- trwałości danych.
+
+Każdy etap powinien kończyć się możliwym do zweryfikowania rezultatem.
+
+Nie deklarować gotowości bez kompilacji i testów.

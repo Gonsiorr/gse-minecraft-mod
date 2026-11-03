@@ -1,0 +1,17 @@
+# Gradle
+.gradle/
+build/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
+
+# Local Minecraft runtime data
+run/
+
+# Private local handoff notes (contains Codex and chat references)
+docs/WORK_HISTORY.local.md
